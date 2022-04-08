@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
+import {
+    createUserWithEmailAndPassword,
+    getAuth,
+    sendEmailVerification,
+    signInWithEmailAndPassword,
+    updateProfile,
+} from 'firebase/auth';
 import './Form.css';
 import app from '../../firebase.init';
 
@@ -11,56 +17,81 @@ const Form = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [userDetails, setUserDetails] = useState('');
 
     const getName = (e) => {
-        const name = e.target.value;
-        setName(name);
+        setName(e.target.value);
     };
 
     const getEmail = (e) => {
-        const email = e.target.value;
-        setEmail(email);
+        setEmail(e.target.value);
     };
 
     const getPassword = (e) => {
-        const password = e.target.value;
-        setPassword(password);
+        setPassword(e.target.value);
     };
 
     const handleSignUp = (e) => {
-        e.preventDefault();
         createUserWithEmailAndPassword(auth, email, password)
             .then((result) => {
                 setUser(result.user);
+                setProfileName();
+                verifyEmail();
             })
             .then((error) => {
                 console.error(error);
             });
+        e.preventDefault();
     };
+
+    const handleLogIn = (e) => {
+        signInWithEmailAndPassword(auth, email, password).then((result) => {
+            setUserDetails(result.user);
+        });
+
+        e.preventDefault();
+    };
+
+    const setProfileName = () => {
+        updateProfile(auth.currentUser, {
+            displayName: name,
+        });
+    };
+
+    const verifyEmail = () => {
+        sendEmailVerification(auth.currentUser).then(() => {
+            console.log('email send');
+        });
+    };
+
+    console.log(userDetails)
 
     const formSlideRight = {
         transition: '.3s ease-in-out',
-        transform: 'translateX(100%)'
-    }
+        transform: 'translateX(100%)',
+    };
 
     const formSlideLeft = {
         transition: '.3s ease-in-out',
-        transform: 'translateX(0%)'
-    }
+        transform: 'translateX(0%)',
+    };
 
     const toggleSlideRight = {
         transition: '.3s ease-in-out',
-        transform: 'translateX(-100%)'
-    }
+        transform: 'translateX(-100%)',
+    };
 
     const toggleSlideLeft = {
         transition: '.3s ease-in-out',
-        transform: 'translateX(0%)'
-    }
+        transform: 'translateX(0%)',
+    };
 
     return (
         <>
-            <div className="form" style={isLogin ? formSlideRight : formSlideLeft}>
+            <div
+                className="form"
+                style={isLogin ? formSlideRight : formSlideLeft}
+            >
                 <div className="heading">
                     <h2>
                         {isLogin
@@ -69,7 +100,7 @@ const Form = () => {
                     </h2>
                 </div>
 
-                <form onSubmit={handleSignUp}>
+                <form onSubmit={isLogin ? handleLogIn : handleSignUp}>
                     {isLogin || (
                         <div className="form-group">
                             <label>
@@ -99,18 +130,28 @@ const Form = () => {
                             <input
                                 onBlur={getPassword}
                                 type="password"
-                                placeholder="Choose your password"
+                                placeholder={
+                                    isLogin
+                                        ? 'Enter your password'
+                                        : 'Choose your password'
+                                }
                                 required
                             />
                         </label>
                     </div>
                     <div className="form-group">
-                        <input type="submit" value={isLogin? 'Log in': 'Register'} />
+                        <input
+                            type="submit"
+                            value={isLogin ? 'Log in' : 'Register'}
+                        />
                     </div>
                 </form>
             </div>
 
-            <div className="toggle"  style={isLogin ? toggleSlideRight : toggleSlideLeft}>
+            <div
+                className="toggle"
+                style={isLogin ? toggleSlideRight : toggleSlideLeft}
+            >
                 <h2>
                     {isLogin
                         ? 'Not registered yet?'
