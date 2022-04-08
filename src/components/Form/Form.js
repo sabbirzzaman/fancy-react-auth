@@ -8,6 +8,7 @@ import {
 } from 'firebase/auth';
 import './Form.css';
 import app from '../../firebase.init';
+import { useNavigate } from 'react-router-dom';
 
 const auth = getAuth(app);
 
@@ -17,7 +18,6 @@ const Form = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [userDetails, setUserDetails] = useState('');
 
     const getName = (e) => {
         setName(e.target.value);
@@ -31,6 +31,8 @@ const Form = () => {
         setPassword(e.target.value);
     };
 
+    const navigate = useNavigate();
+
     const handleSignUp = (e) => {
         createUserWithEmailAndPassword(auth, email, password)
             .then((result) => {
@@ -39,14 +41,17 @@ const Form = () => {
                 verifyEmail();
             })
             .then((error) => {
-                console.error(error);
+                console.log(error);
             });
         e.preventDefault();
     };
 
+    console.log(user);
+
     const handleLogIn = (e) => {
         signInWithEmailAndPassword(auth, email, password).then((result) => {
-            setUserDetails(result.user);
+            setUser(result.user);
+            navigate('/surprise');
         });
 
         e.preventDefault();
@@ -63,8 +68,6 @@ const Form = () => {
             console.log('email send');
         });
     };
-
-    console.log(userDetails)
 
     const formSlideRight = {
         transition: '.3s ease-in-out',
@@ -87,9 +90,9 @@ const Form = () => {
     };
 
     return (
-        <>
+        <div className="card">
             <div
-                className="form"
+                className="form-container"
                 style={isLogin ? formSlideRight : formSlideLeft}
             >
                 <div className="heading">
@@ -161,7 +164,7 @@ const Form = () => {
                     {isLogin ? 'Register' : 'Log In'}
                 </button>
             </div>
-        </>
+        </div>
     );
 };
 

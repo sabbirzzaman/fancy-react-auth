@@ -1,0 +1,14 @@
+.surprise {
+    width: 100%;
+    height: 60%;
+    background-color: #a5b4fc;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.surprise h1 {
+   margin-bottom: 20px;
+}
