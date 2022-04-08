@@ -20,17 +20,42 @@ code {
 }
 
 h2 {
-    font-size: 34px;
+    color: #312e81;
+    font-size: 24px;
     margin-bottom: 20px;
+    text-transform: uppercase;
 }
 
-button, input[type=button] {
-    background-color: #3498db;
-    color: #fff;
-    font-size: 16px;
+p {
+    color: #312e81;
+    font-weight: 500;
+}
+
+button, input[type=submit] {
+    background-color: #fff;
+    color: #312e81;
+    font-size: 14px;
     font-weight: 600;
     padding: 5px 30px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    box-shadow: 0 10px 15px -3px rgb(0 0 0/0.1),0 4px 6px -4px rgb(0 0 0/0.1);
+    transition: .3s ease-in-out;
+}
+
+button:hover {
+    background-color: #312e81;
+    color: white;
+}
+
+input[type=submit] {
+    background-color: #312e81;
+    color: white;
+    margin-top: 10px;
+}
+
+input[type=submit]:hover {
+    background-color: #a5b4fc;
+    color: #312e81;
 }

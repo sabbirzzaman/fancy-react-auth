@@ -1,11 +1,11 @@
 import './App.css';
-import Signup from './components/Signup/Signup';
+import Form from './components/Form/Form';
 
 function App() {
   return (
     <div className='container'>
       <div className="card">
-        <Signup></Signup>
+        <Form></Form>
       </div>
     </div>
   );
